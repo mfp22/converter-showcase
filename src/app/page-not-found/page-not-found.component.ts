@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LetModule } from '@ngrx/component';
+import { LetDirective } from '@ngrx/component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable, map, tap, timer } from 'rxjs';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
     imports: [
         MatButtonModule,
         MatProgressSpinnerModule,
-        LetModule,
+        LetDirective,
     ],
 })
 export class PageNotFoundComponent {
