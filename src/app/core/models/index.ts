@@ -1,3 +1,3 @@
-export * from './exchangeRate.model';
-export * from './exchangeRateInfos.model';
-export * from './iso4217.model';
+export * from './exchange-rate.type';
+export * from './exchange-rate-infos.type';
+export * from './iso4217.enum';

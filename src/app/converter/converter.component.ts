@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { exchangeRate, exchangeRateInfo, iso4217 } from 'src/app/core/models';
+import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/core/models';
 import { ExchangeRateService } from 'src/app/core/services';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SubscriptionSupervisorComponent } from 'src/app/core/components/subscription-supervisor/subscription-supervisor.component';
@@ -43,7 +43,7 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         }),
     });
 
-    readonly exchangeRateReal$: Observable<exchangeRate> = this.exchangeRateService.exchangeRate$.pipe(
+    readonly exchangeRateReal$: Observable<ExchangeRate> = this.exchangeRateService.exchangeRate$.pipe(
         tap(exchangeRate => {
             /**
              * RealTime exchangeRateGap validation request.
@@ -128,7 +128,7 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         this.exchangeRateForcedChanges$.pipe(this.unsubsribeOnDestroy).subscribe();
     }
 
-    save(exchangeRateReal: exchangeRate): void {
+    save(exchangeRateReal: ExchangeRate): void {
         if (
             this.changeForm.controls.cashSource.controls.amount.value &&
             this.changeForm.controls.cashTarget.controls.amount.value &&
@@ -148,7 +148,7 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         }
     }
 
-    delete(exchangeRateInfo: exchangeRateInfo): void {
+    delete(exchangeRateInfo: ExchangeRateInfo): void {
         this.exchangeRateService.remove(exchangeRateInfo.date);
     }
 

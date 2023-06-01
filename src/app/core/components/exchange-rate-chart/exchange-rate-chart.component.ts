@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { exchangeRate } from 'src/app/core/models';
+import { ExchangeRate } from 'src/app/core/models';
 import { Observable, bufferCount, scan, tap } from 'rxjs';
 import { SubscriptionSupervisorComponent } from 'src/app/core/components/subscription-supervisor/subscription-supervisor.component';
 import * as echarts from 'echarts';
@@ -10,7 +10,7 @@ import * as echarts from 'echarts';
   styleUrls: ['exchange-rate-chart.component.scss'],
 })
 export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent implements OnChanges {
-  @Input() exchangeRate$!: Observable<exchangeRate>;
+  @Input() exchangeRate$!: Observable<ExchangeRate>;
 
   isLoading = true;
   updateOptions: Partial<echarts.EChartsOption> = {};
@@ -57,7 +57,7 @@ export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent 
         }
         return acc;
       }),
-      tap((exchangeRates: exchangeRate[]) => {
+      tap((exchangeRates: ExchangeRate[]) => {
         this.updateOptions = {
           series: this.processSeries(exchangeRates.map((exchangeRate) => exchangeRate.rate)),
           title: this.processTitle(...exchangeRates),
@@ -96,15 +96,15 @@ export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent 
     }
   }
 
-  processYAxis(data: exchangeRate[] = []): echarts.YAXisComponentOption | echarts.YAXisComponentOption[] {
+  processYAxis(data: ExchangeRate[] = []): echarts.YAXisComponentOption | echarts.YAXisComponentOption[] {
     return {
       type: 'value',
-      min: (Math.min(...data.map((exchangeRate: exchangeRate) => exchangeRate.rate)) - 0.2).toFixed(2),
-      max: (Math.max(...data.map((exchangeRate: exchangeRate) => exchangeRate.rate)) + 0.2).toFixed(2),
+      min: (Math.min(...data.map((exchangeRate: ExchangeRate) => exchangeRate.rate)) - 0.2).toFixed(2),
+      max: (Math.max(...data.map((exchangeRate: ExchangeRate) => exchangeRate.rate)) + 0.2).toFixed(2),
     }
   }
 
-  processTitle(exchangeRate?: exchangeRate): echarts.TitleComponentOption | echarts.TitleComponentOption[] {
+  processTitle(exchangeRate?: ExchangeRate): echarts.TitleComponentOption | echarts.TitleComponentOption[] {
     return {
       text: 'Real-time Exchange Rate',
       ...(exchangeRate && {subtext: `${exchangeRate.target} exchange rate for 1${exchangeRate.source} at ${(new Date(exchangeRate.date).toDateString())}`}),

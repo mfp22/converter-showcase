@@ -1,17 +1,17 @@
-import { exchangeRate, exchangeRateInfo, iso4217 } from 'src/app/core/models';
+import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/core/models';
 import { Injectable } from '@angular/core';
 import { Observable, map, scan, share, timer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ExchangeRateService {
-    readonly exchangeRate$: Observable<exchangeRate> = timer(0, 1000).pipe(
+    readonly exchangeRate$: Observable<ExchangeRate> = timer(0, 1000).pipe(
         map(() => {return {
             source: iso4217.EUR,
             target: iso4217.USD,
             rate: 1.1,
             date: (new Date()).toISOString(),
         }}),
-        scan((acc: exchangeRate) => {return {
+        scan((acc: ExchangeRate) => {return {
             source: iso4217.EUR,
             target: iso4217.USD,
             rate: Number((acc.rate + Number((Math.random() * .1 -.05).toFixed(2))).toFixed(2)),
@@ -19,11 +19,11 @@ export class ExchangeRateService {
         }}),
         share(),
     )
-    readonly exchangeRateHistory: Map<string, exchangeRateInfo> = new Map(Object.entries(localStorage).map(([key, value]) => {
+    readonly exchangeRateHistory: Map<string, ExchangeRateInfo> = new Map(Object.entries(localStorage).map(([key, value]) => {
         return [key, JSON.parse(value)];
     }));
 
-    public add(exchangeRateInfo: exchangeRateInfo): void {
+    public add(exchangeRateInfo: ExchangeRateInfo): void {
         if (!this.exchangeRateHistory.get(exchangeRateInfo.date)) {
             if (this.exchangeRateHistory.size >= 5) {
                 const min = Math.min(...Object.keys(localStorage).map((ISOString: string) => (new Date(ISOString).getTime())))

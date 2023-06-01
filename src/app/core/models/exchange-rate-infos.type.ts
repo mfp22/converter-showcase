@@ -1,6 +1,6 @@
 import { iso4217 } from ".";
 
-export type exchangeRateInfo = {
+export type ExchangeRateInfo = {
     date: string;
     exchangeRateForced: string;
     exchangeRateReal: number;

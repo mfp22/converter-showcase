@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { exchangeRateInfo } from 'src/app/core/models';
+import { ExchangeRateInfo } from 'src/app/core/models';
 
 @Component({
     selector: 'app-exchange-rate-card',
@@ -8,6 +8,6 @@ import { exchangeRateInfo } from 'src/app/core/models';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExchangeRateCardComponent {
-    @Input() exchangeRate!: exchangeRateInfo;
-    @Output() deleteRequest = new EventEmitter<exchangeRateInfo>();
+    @Input() exchangeRate!: ExchangeRateInfo;
+    @Output() deleteRequest = new EventEmitter<ExchangeRateInfo>();
 }
