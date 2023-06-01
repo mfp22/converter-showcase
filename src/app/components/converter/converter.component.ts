@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReversePipe, NoDataPipe } from 'src/app/pipes';
 import { SubscriptionSupervisorComponent } from 'src/app/components/subscription-supervisor/subscription-supervisor.component';
-import { tap, withLatestFrom, share, filter, Observable } from 'rxjs';
+import { tap, withLatestFrom, share, filter, Observable, combineLatest, startWith } from 'rxjs';
 
 @Component({
     selector: 'app-converter',
@@ -147,6 +147,15 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
                 }
             );
         }),
+    );
+    readonly currencies$ = combineLatest([
+        this.changeForm.controls.cashSource.controls.currency.valueChanges.pipe(startWith(iso4217.EUR)),
+        this.changeForm.controls.cashTarget.controls.currency.valueChanges.pipe(startWith(iso4217.USD)),
+    ]).pipe(
+        tap(([source, target]) => {
+            this.exchangeRateService.source = source;
+            this.exchangeRateService.target = target;
+        }),
     )
 
     constructor(
@@ -157,6 +166,7 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         this.cashSourceChanges$.pipe(this.unsubsribeOnDestroy).subscribe();
         this.cashTargetChanges$.pipe(this.unsubsribeOnDestroy).subscribe();
         this.exchangeRateForcedChanges$.pipe(this.unsubsribeOnDestroy).subscribe();
+        this.currencies$.pipe(this.unsubsribeOnDestroy).subscribe();
     }
 
     save(exchangeRateReal: ExchangeRate): void {
@@ -185,12 +195,10 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
 
     switch(): void {
         const cashTargetCurrency = this.changeForm.controls.cashTarget.controls.currency.value;
-        this.changeForm.controls.cashTarget.controls.currency.setValue(
-            this.changeForm.controls.cashSource.controls.currency.value,
-            {
-                emitEvent: false,
-            }
-        );
+        this.changeForm.controls.cashTarget.setValue({
+            amount: this.changeForm.controls.cashSource.controls.amount.value,
+            currency: this.changeForm.controls.cashSource.controls.currency.value,
+        });
         this.changeForm.controls.cashSource.setValue({
             amount: this.changeForm.controls.cashTarget.controls.amount.value,
             currency: cashTargetCurrency,

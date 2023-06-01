@@ -18,9 +18,3 @@ Please refer to [todo.md](./todo.md).
 
 ## Roadmap
 Please refer to [roadmap.md](./roadmap.md).
-
-===
-- corriger todo:'lorsqu'on change de devise, réintialser/actualiser le realtime chart'
-- ajouter tests
-
-installer sonarCube (community edition)

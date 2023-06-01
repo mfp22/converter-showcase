@@ -56,6 +56,14 @@ export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent 
       bufferCount(1, 1),
       tap(() => this.isLoading = false),
       scan((acc, val) => {
+        const accReversed: ExchangeRate[] = [...acc].reverse();
+        if (
+          acc.length > 1 &&
+          (accReversed[1].source !== accReversed[0].source || accReversed[1].target !== accReversed[0].target)
+        ) {
+          this.isLoading = true;
+          return val;
+        }
         acc = [...acc, ...val];
         if (acc.length > this.maximumDatas) {
           acc.shift();
@@ -68,7 +76,7 @@ export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent 
           title: this.processTitle(...exchangeRates),
           xAxis: this.processXAxis(exchangeRates.map((exchangeRate) => exchangeRate.date)),
           yAxis: this.processYAxis(exchangeRates),
-        }
+        };
       }),
     ).subscribe();
   }

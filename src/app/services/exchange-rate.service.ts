@@ -4,16 +4,18 @@ import { Observable, map, scan, share, timer } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ExchangeRateService {
+    source = iso4217.EUR;
+    target = iso4217.USD;
     readonly exchangeRate$: Observable<ExchangeRate> = timer(0, 1000).pipe(
         map(() => {return {
-            source: iso4217.EUR,
-            target: iso4217.USD,
+            source: this.source,
+            target: this.target,
             rate: 1.1,
             date: (new Date()).toISOString(),
         }}),
         scan((acc: ExchangeRate) => {return {
-            source: iso4217.EUR,
-            target: iso4217.USD,
+            source: this.source,
+            target: this.target,
             rate: Number((acc.rate + Number((Math.random() * .1 -.05).toFixed(2))).toFixed(2)),
             date: (new Date()).toISOString(),
         }}),
@@ -23,7 +25,7 @@ export class ExchangeRateService {
         return [key, JSON.parse(value)];
     }));
 
-    public add(exchangeRateInfo: ExchangeRateInfo): void {
+    add(exchangeRateInfo: ExchangeRateInfo): void {
         if (!this.exchangeRateHistory.get(exchangeRateInfo.date)) {
             if (this.exchangeRateHistory.size >= 5) {
                 const min = Math.min(...Object.keys(localStorage).map((ISOString: string) => (new Date(ISOString).getTime())))
@@ -34,7 +36,7 @@ export class ExchangeRateService {
         }
     }
 
-    public remove(exchangeRateInfoKey: string): void {
+    remove(exchangeRateInfoKey: string): void {
         this.exchangeRateHistory.delete(exchangeRateInfoKey);
         localStorage.removeItem(exchangeRateInfoKey);
     }
