@@ -22,7 +22,6 @@ Please refer to [roadmap.md](./roadmap.md).
 ===
 - faire standalone des composant non déclaré dans les modules (par exemple core)
 - exporter les composants utilisés par un seul composant dans ce composant
-- ajouter linter
 - mettre convention de nommage des type avec commencant par majuscule
 
 installer sonarCube (community edition)

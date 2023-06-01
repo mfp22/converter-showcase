@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'noData'
 })
 export class NoDataPipe implements PipeTransform {
-    transform<T>(value: any): any {
+    transform<T>(value: T): T|string {
         return value || 'N/D';
     }
 }

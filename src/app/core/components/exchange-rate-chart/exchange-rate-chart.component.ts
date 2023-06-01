@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { exchangeRate } from 'src/app/core/models';
 import { Observable, bufferCount, scan, tap } from 'rxjs';
 import { SubscriptionSupervisorComponent } from 'src/app/core/components/subscription-supervisor/subscription-supervisor.component';
@@ -12,7 +12,7 @@ import * as echarts from 'echarts';
 export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent implements OnChanges {
   @Input() exchangeRate$!: Observable<exchangeRate>;
 
-  isLoading: boolean = true;
+  isLoading = true;
   updateOptions: Partial<echarts.EChartsOption> = {};
   
   readonly chartOption: echarts.EChartsOption = {
