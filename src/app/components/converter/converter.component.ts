@@ -1,8 +1,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/core/models';
-import { ExchangeRateService } from 'src/app/core/services';
-import { FormBuilder, Validators } from '@angular/forms';
-import { SubscriptionSupervisorComponent } from 'src/app/core/components/subscription-supervisor/subscription-supervisor.component';
+import { CommonModule, AsyncPipe } from '@angular/common';
+import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/models';
+import { ExchangeRateCardComponent } from 'src/app/components/exchange-rate-card/exchange-rate-card.component';
+import { ExchangeRateChartComponent } from 'src/app/components/exchange-rate-chart/exchange-rate-chart.component';
+import { ExchangeRateService } from 'src/app/services';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { GridDirective } from 'src/app/directives';
+import { LetDirective } from '@ngrx/component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { ReversePipe, NoDataPipe } from 'src/app/pipes';
+import { SubscriptionSupervisorComponent } from 'src/app/components/subscription-supervisor/subscription-supervisor.component';
 import { tap, withLatestFrom, share, filter, Observable } from 'rxjs';
 
 @Component({
@@ -10,6 +21,26 @@ import { tap, withLatestFrom, share, filter, Observable } from 'rxjs';
     templateUrl: 'converter.component.html',
     styleUrls: ['converter.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        ReversePipe,
+        NoDataPipe,
+        GridDirective,
+        CommonModule,
+        ExchangeRateCardComponent,
+        ExchangeRateChartComponent,
+        FormsModule,
+        LetDirective,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatSelectModule,
+        ReactiveFormsModule,
+    ],
+    providers: [
+        AsyncPipe,
+    ],
 })
 export class ConverterComponent extends SubscriptionSupervisorComponent {
     exchangeRateGapLimit = 0.02;

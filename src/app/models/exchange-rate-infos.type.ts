@@ -9,4 +9,4 @@ export type ExchangeRateInfo = {
     targetCurrency: iso4217;
     targetValue: string;
     variation: number|null;
-}
+};

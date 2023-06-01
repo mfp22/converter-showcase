@@ -1,13 +1,18 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ExchangeRate } from 'src/app/core/models';
+import { ExchangeRate } from 'src/app/models';
+import { NgxEchartsModule } from 'ngx-echarts';
 import { Observable, bufferCount, scan, tap } from 'rxjs';
-import { SubscriptionSupervisorComponent } from 'src/app/core/components/subscription-supervisor/subscription-supervisor.component';
+import { SubscriptionSupervisorComponent } from 'src/app/components/subscription-supervisor/subscription-supervisor.component';
 import * as echarts from 'echarts';
 
 @Component({
   selector: 'app-exchange-rate-chart',
   templateUrl: 'exchange-rate-chart.component.html',
   styleUrls: ['exchange-rate-chart.component.scss'],
+  standalone: true,
+  imports: [
+    NgxEchartsModule,
+  ],
 })
 export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent implements OnChanges {
   @Input() exchangeRate$!: Observable<ExchangeRate>;

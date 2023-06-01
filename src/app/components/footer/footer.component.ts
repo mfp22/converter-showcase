@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -8,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['footer.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
     MatIconModule,
   ]
 })

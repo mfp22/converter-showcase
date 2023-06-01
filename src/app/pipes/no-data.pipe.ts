@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'noData'
+    name: 'noData',
+    standalone: true,
 })
 export class NoDataPipe implements PipeTransform {
     transform<T>(value: T): T|string {

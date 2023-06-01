@@ -1,7 +1,8 @@
 import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 
 @Directive({
-  selector: '[appGrid]'
+  selector: '[appGrid]',
+  standalone: true,
 })
 export class GridDirective implements OnChanges {
     @Input() gap = 'none';

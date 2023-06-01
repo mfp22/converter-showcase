@@ -1,4 +1,4 @@
-import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/core/models';
+import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/models';
 import { Injectable } from '@angular/core';
 import { Observable, map, scan, share, timer } from 'rxjs';
 

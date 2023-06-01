@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
     {
         path: 'converter',
-        loadChildren: () => import('./converter/converter.module').then((m) => m.ConverterModule),
+        loadComponent: () => import('./components/converter/converter.component').then(m => m.ConverterComponent)
     },
     {
         path: '',

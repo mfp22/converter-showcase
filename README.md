@@ -20,8 +20,6 @@ Please refer to [todo.md](./todo.md).
 Please refer to [roadmap.md](./roadmap.md).
 
 ===
-- faire standalone des composant non déclaré dans les modules (par exemple core)
-- exporter les composants utilisés par un seul composant dans ce composant
 - corriger todo:'lorsqu'on change de devise, réintialser/actualiser le realtime chart'
 - ajouter tests
 
