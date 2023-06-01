@@ -1,0 +1,94 @@
+<ng-container *ngrxLet="exchangeRateReal$ as exchangeRateReal">
+    <form
+        appGrid
+        templateColumns="repeat(2, 1fr)" gap="20px"
+        [formGroup]="changeForm"
+        (ngSubmit)="save(exchangeRateReal)">
+        <div>
+            <mat-form-field formGroupName="cashSource">
+                <input
+                    placeholder="1"
+                    formControlName="amount"
+                    matInput>|
+                <mat-select formControlName="currency">
+                    <mat-option
+                        *ngFor="let quote of iso4217"
+                        [disabled]="quote === changeForm.controls.cashTarget.controls.currency.value"
+                        [value]="quote">
+                        {{quote}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field formGroupName="cashTarget">
+                <input
+                    placeholder="{{exchangeRateReal.rate}}"
+                    formControlName="amount"
+                    matInput>|
+                <mat-select formControlName="currency">
+                    <mat-option
+                        *ngFor="let quote of iso4217"
+                        [disabled]="quote === changeForm.controls.cashSource.controls.currency.value"
+                        [value]="quote">
+                        {{quote}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field>
+                <span matTextPrefix>1:</span>
+                <input
+                    placeholder="{{exchangeRateReal.rate}}"
+                    formControlName="exchangeRateForced"
+                    matInput>
+                <mat-icon matSuffix *ngIf="changeForm.controls.exchangeRateForced.value.length === 0">radio_button_unchecked</mat-icon>
+                <mat-icon
+                    matSuffix
+                    color="primary"
+                    *ngIf="
+                        changeForm.controls.exchangeRateForced.value.length > 0 &&
+                        changeForm.controls.exchangeRateForced.valid
+                    ">
+                        radio_button_checked
+                    </mat-icon>
+                <mat-icon matSuffix color="warn" *ngIf="changeForm.controls.exchangeRateForced.hasError('limitValidator')">cancel</mat-icon>
+                <mat-error *ngIf="changeForm.controls.exchangeRateForced.hasError('limitValidator')">
+                    abs({{changeForm.controls.exchangeRateForced.getError('limitValidator').actual|percent:'1.0-2'}})
+                    ER variation >
+                    {{changeForm.controls.exchangeRateForced.getError('limitValidator').required|percent:'1.0-2'}}
+                    ER limit!
+                </mat-error>
+            </mat-form-field>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <button
+                        mat-icon-button
+                        type="button"
+                        (click)="switch()"
+                        color="primary">
+                        <mat-icon>sync_alt</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        (click)="save(exchangeRateReal)"
+                        color="primary"
+                        [disabled]="!changeForm.controls.cashSource.controls.amount.valid">
+                        <mat-icon>save</mat-icon>
+                    </button>
+                </div>
+                <div style="display: flex; flex-direction: column; text-align: right;">
+                    <span>Real Exchange Rate: <strong>{{exchangeRateReal.rate}}</strong></span>
+                    <span>Forced Exchange Rate: <strong>{{changeForm.controls.exchangeRateForced.value|noData}}</strong></span>
+                </div>
+            </div>
+        </div>
+    </form>
+    <app-exchange-rate-chart [exchangeRate$]="exchangeRateReal$"></app-exchange-rate-chart>
+    <div appGrid templateColumns="repeat(5, 1fr)" gap="20px">
+        <app-exchange-rate-card
+            *ngFor="let exchangeRateInfo of exchangeRateService.exchangeRateHistory | keyvalue | reverse"
+            [exchangeRate]="exchangeRateInfo.value"
+            (deleteRequest)="delete($event)">
+        </app-exchange-rate-card>
+    </div>
+</ng-container>

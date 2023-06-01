@@ -1,0 +1,32 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+    form {
+        > div {
+            display: flex;
+            flex-direction: column;
+        }
+        [formGroupName="cashSource"],
+        [formGroupName="cashTarget"] {
+            > ::ng-deep .mat-mdc-text-field-wrapper > .mat-mdc-form-field-flex > .mat-mdc-form-field-infix {
+                display: flex;
+            }
+        }
+        [formControlName="currency"] {
+            text-align: end;
+            > ::ng-deep .mat-mdc-select-trigger {
+                gap: 6px;
+            }
+        }
+        ::ng-deep mat-form-field > .mat-mdc-text-field-wrapper {
+            border-radius: 0;
+        }
+    }
+    app-exchange-rate-chart {
+        background-color: whitesmoke;
+        margin-bottom: 20px;
+        padding: 20px 10px;
+    }
+}

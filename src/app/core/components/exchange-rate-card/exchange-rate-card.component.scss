@@ -1,0 +1,34 @@
+:host {
+    mat-card-header {
+        justify-content: space-between;
+    }
+    ::ng-deep mat-card-title {
+        align-items: center;
+        flex-direction: row;
+        display: flex;
+    }
+    mat-card {
+        border-radius: 0;
+        gap: 10px;
+    }
+    mat-card-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        > span {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        strong {
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+.snack {
+    margin-right: 4px;
+}

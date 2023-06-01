@@ -1,0 +1,17 @@
+:host {
+    align-items: center;
+    background-color: var(--color-dark-blue);
+    box-sizing: border-box;
+    color: var(--color-white);
+    display: flex;
+    justify-content: space-between;
+    max-height: 42px;
+    min-height: 42px;
+    padding: 4px 12px;
+    > a {
+        height: 100%;
+        > img {
+            height: 100%;
+        }
+    }
+}

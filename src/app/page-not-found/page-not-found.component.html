@@ -1,0 +1,11 @@
+<h2>Page Not Found</h2>
+<p>Redirect to home ?</p>
+<ng-container *ngrxLet="redirectionCountdown$ as redirectionCountdown">
+    <p>{{redirectionCountdown}}</p>
+    <mat-spinner></mat-spinner>
+</ng-container>
+<button
+    mat-button
+    (click)="redirect()">
+    Home
+</button>
