@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LetDirective } from '@ngrx/component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Observable, map, tap, timer } from 'rxjs';
 import { Router } from '@angular/router';
@@ -11,13 +12,14 @@ import { Router } from '@angular/router';
     styleUrls: ['./page-not-found.component.scss'],
     standalone: true,
     imports: [
-        MatButtonModule,
-        MatProgressSpinnerModule,
         LetDirective,
+        MatButtonModule,
+        MatIconModule,
+        MatProgressSpinnerModule,
     ],
 })
 export class PageNotFoundComponent {
-    private readonly count = 5;
+    private readonly count = 15;
 
     redirectionCountdown$: Observable<number> = timer(0, 1000).pipe(
         map((count: number) => this.count - count),
