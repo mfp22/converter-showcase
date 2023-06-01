@@ -13,6 +13,12 @@ Run `npm ci`.
 Run `npm start`.
 The application run on **localhost:4200**.
 
+## TODO
+Please refer to [todo.md](./todo.md).
+
+## Roadmap
+Please refer to [roadmap.md](./roadmap.md).
+
 ===
 - faire standalone des composant non déclaré dans les modules (par exemple core)
 - exporter les composants utilisés par un seul composant dans ce composant

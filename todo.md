@@ -1,3 +1,4 @@
+# TODOs
 - ajouter tests de non regressions
 - améliorer accessibilité
 - améliorer responsive

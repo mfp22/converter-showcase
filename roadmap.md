@@ -1,3 +1,4 @@
+# Roadmap
 - connecter l'application à un exchange rate web service
 - connecter l'initialisation de l'exchange rate au web service
 - appeler le web service pour obtenir l'exchange rate correspondant à chaque changement de devise (source et cible)
