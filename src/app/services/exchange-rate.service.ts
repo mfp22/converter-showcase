@@ -30,4 +30,8 @@ export class ExchangeRateService {
     get(source: iso4217, target: iso4217): Observable<ExchangeRate> {
         return this.httpClient.get<ExchangeRate>(`/exchange-rate/source/${source}/target/${target}`);
     }
+
+    clear(): void {
+        Object.keys(this.exchangeRateHistory).forEach((key: string) => this.remove(key));
+    }
 }

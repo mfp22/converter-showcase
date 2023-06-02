@@ -13,3 +13,4 @@
 - ajouter MatSnackBar pour notifier les HttpError du HttpErrorInterceptor
 - ajouter delay() aléatoire entre 10ms et 200ms à ExchangeRateMockInterceptor.intercept(), puis stopper le timer() de ConverterComponent tant que la réponse n'est pas reçue.
 - fix exchangeRateChartComponent n'affiche pas la première valeur envoyée par exchangeRate$ alors qu'elle devrait. arrive aussi juste après changement d'une devise où le dernier exchangeRate avec devise changée est affichée avant le reload du chart et n'est pas affichée comme premier point à la fin du reload du chart.
+- améliorer les tests pour clear le localStorage à chaque live-reload des tests
