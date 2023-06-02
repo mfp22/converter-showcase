@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReversePipe, NoDataPipe } from 'src/app/pipes';
 import { SubscriptionSupervisorComponent } from 'src/app/components/subscription-supervisor/subscription-supervisor.component';
-import { tap, withLatestFrom, share, filter, Observable, combineLatest, startWith } from 'rxjs';
+import { combineLatest, filter, interval, mergeMap, Observable, share, startWith, tap, withLatestFrom } from 'rxjs';
 
 @Component({
     selector: 'app-converter',
@@ -74,8 +74,12 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         }),
     });
 
-    readonly exchangeRateReal$: Observable<ExchangeRate> = this.exchangeRateService.exchangeRate$.pipe(
-        tap(exchangeRate => {
+    readonly exchangeRateReal$: Observable<ExchangeRate> = interval(1000).pipe(
+        mergeMap(() => this.exchangeRateService.get(
+            this.changeForm.controls.cashSource.controls.currency.value,
+            this.changeForm.controls.cashTarget.controls.currency.value,
+        )),
+        tap((exchangeRate: ExchangeRate) => {
             /**
              * RealTime exchangeRateGap validation request.
              * 
@@ -149,14 +153,9 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         }),
     );
     readonly currencies$ = combineLatest([
-        this.changeForm.controls.cashSource.controls.currency.valueChanges.pipe(startWith(iso4217.EUR)),
-        this.changeForm.controls.cashTarget.controls.currency.valueChanges.pipe(startWith(iso4217.USD)),
-    ]).pipe(
-        tap(([source, target]) => {
-            this.exchangeRateService.source = source;
-            this.exchangeRateService.target = target;
-        }),
-    )
+        this.changeForm.controls.cashSource.controls.currency.valueChanges.pipe(startWith(this.changeForm.controls.cashSource.controls.currency.value)),
+        this.changeForm.controls.cashTarget.controls.currency.valueChanges.pipe(startWith(this.changeForm.controls.cashTarget.controls.currency.value)),
+    ]);
 
     constructor(
         public exchangeRateService: ExchangeRateService,

@@ -1,5 +1,6 @@
 # TODOs
-- améliorer le code pour l'initialisation et la synchronisation des iso4217 source & target entre ConverterComponent et ExchangeRateService 
+- ajouter tests
+- ajouter exchangeRate difference type snack sur ligne 'Forced Exchange Rate' de ConverterComponent
 - ajouter tests de non regressions (augmenter la couverture de tests)
 - améliorer accessibilité
 - améliorer responsive (notamment en X)
@@ -7,3 +8,8 @@
 - ajouter enableMode prod
 - regarder si le code est améliorable avec Validators.required
 - lancer un SonarCube
+- ajouter async appConfig app initialisation
+- ajouter interceptor pour injecter apiPath dans les requêtes visées (requêtes précédées par un flag pour identifier l'API visée)
+- ajouter MatSnackBar pour notifier les HttpError du HttpErrorInterceptor
+- ajouter delay() aléatoire entre 10ms et 200ms à ExchangeRateMockInterceptor.intercept(), puis stopper le timer() de ConverterComponent tant que la réponse n'est pas reçue.
+- fix exchangeRateChartComponent n'affiche pas la première valeur envoyée par exchangeRate$ alors qu'elle devrait. arrive aussi juste après changement d'une devise où le dernier exchangeRate avec devise changée est affichée avant le reload du chart et n'est pas affichée comme premier point à la fin du reload du chart.

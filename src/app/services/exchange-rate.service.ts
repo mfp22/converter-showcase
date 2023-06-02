@@ -1,29 +1,15 @@
 import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/models';
 import { Injectable } from '@angular/core';
-import { Observable, map, scan, share, timer } from 'rxjs';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class ExchangeRateService {
-    source = iso4217.EUR;
-    target = iso4217.USD;
-    readonly exchangeRate$: Observable<ExchangeRate> = timer(0, 1000).pipe(
-        map(() => {return {
-            source: this.source,
-            target: this.target,
-            rate: 1.1,
-            date: (new Date()).toISOString(),
-        }}),
-        scan((acc: ExchangeRate) => {return {
-            source: this.source,
-            target: this.target,
-            rate: Number((acc.rate + Number((Math.random() * .1 -.05).toFixed(2))).toFixed(2)),
-            date: (new Date()).toISOString(),
-        }}),
-        share(),
-    )
     readonly exchangeRateHistory: Map<string, ExchangeRateInfo> = new Map(Object.entries(localStorage).map(([key, value]) => {
         return [key, JSON.parse(value)];
     }));
+
+    constructor(private httpClient: HttpClient) {}
 
     add(exchangeRateInfo: ExchangeRateInfo): void {
         if (!this.exchangeRateHistory.get(exchangeRateInfo.date)) {
@@ -39,5 +25,9 @@ export class ExchangeRateService {
     remove(exchangeRateInfoKey: string): void {
         this.exchangeRateHistory.delete(exchangeRateInfoKey);
         localStorage.removeItem(exchangeRateInfoKey);
+    }
+
+    get(source: iso4217, target: iso4217): Observable<ExchangeRate> {
+        return this.httpClient.get<ExchangeRate>(`/exchange-rate/source/${source}/target/${target}`);
     }
 }

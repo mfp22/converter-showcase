@@ -53,7 +53,7 @@ export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent 
     this.chartOption.series = this.processSeries();
     this.exchangeRate$.pipe(
       this.unsubsribeOnDestroy,
-      bufferCount(1, 1),
+      bufferCount(1),
       tap(() => this.isLoading = false),
       scan((acc, val) => {
         const accReversed: ExchangeRate[] = [...acc].reverse();

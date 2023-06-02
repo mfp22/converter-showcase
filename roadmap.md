@@ -6,3 +6,6 @@
 - ajouter mode sombre/clair
 - ajouter internationalisation
 - ajouter et provide http error interceptors
+- ajouter CI
+- déployer sur serveur
+- ajouter CD
