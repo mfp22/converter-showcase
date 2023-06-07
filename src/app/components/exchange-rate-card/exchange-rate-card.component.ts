@@ -12,15 +12,9 @@ import { NoDataPipe } from 'src/app/pipes';
     styleUrls: ['exchange-rate-card.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [
-        CommonModule,
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
-        NoDataPipe,
-    ],
+    imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, NoDataPipe],
 })
 export class ExchangeRateCardComponent {
-    @Input() exchangeRate!: ExchangeRateInfo;
+    @Input() exchangeRate: ExchangeRateInfo | undefined;
     @Output() deleteRequest = new EventEmitter<ExchangeRateInfo>();
 }

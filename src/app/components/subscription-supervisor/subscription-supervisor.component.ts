@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subject, Observable, takeUntil } from 'rxjs';
 
 @Component({
-    template: ''
+    template: '',
 })
 export class SubscriptionSupervisorComponent implements OnDestroy {
     private isAlive$ = new Subject<boolean>();

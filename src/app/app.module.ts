@@ -11,28 +11,26 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    FooterComponent,
-    HeaderComponent,
-    HttpClientModule,
-    NgxEchartsModule.forRoot({
-      echarts: () => import('echarts'),
-    }),
-    ScrollingModule,
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ExchangeRateMockInterceptor,
-      multi: true,
-    },
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    imports: [
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        FooterComponent,
+        HeaderComponent,
+        HttpClientModule,
+        NgxEchartsModule.forRoot({
+            echarts: () => import('echarts'),
+        }),
+        ScrollingModule,
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ExchangeRateMockInterceptor,
+            multi: true,
+        },
+    ],
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,11 +1,11 @@
 /**
  * Enum for ISO 4217 codes.
  * [ISO 4217 - Currency Code Maintenance: Get the Correct Currency Code]{@link https://www.six-group.com/en/products-services/financial-information/data-standards.html}
- * 
+ *
  * @readonly
  * @enum {string}
  */
-export enum iso4217 { 
+export enum iso4217 {
     AED = 'AED',
     AFN = 'AFN',
     ALL = 'ALL',

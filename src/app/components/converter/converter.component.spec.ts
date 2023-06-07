@@ -13,15 +13,13 @@ describe('ConverterComponent', () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule
-            ],
+            imports: [HttpClientTestingModule],
             providers: [
                 ExchangeRateService,
                 {
                     provide: HTTP_INTERCEPTORS,
                     useClass: ExchangeRateMockInterceptor,
-                    multi: true
+                    multi: true,
                 },
             ],
         });
@@ -42,5 +40,5 @@ describe('ConverterComponent', () => {
         component.switch();
         expect(component.changeForm.controls.cashSource.controls.currency.value).toEqual(source);
         expect(component.changeForm.controls.cashTarget.controls.currency.value).toEqual(target);
-    })
+    });
 });

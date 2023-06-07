@@ -4,9 +4,9 @@
     --color-dark-blue: #0c2a4d;
     --color-grey: #e2dede;
     --color-light-blue: #003b72;
-    --color-primary: #4051B5;
+    --color-primary: #4051b5;
     --color-red: #e90026;
-    --color-warn: #F44336;
+    --color-warn: #f44336;
     --color-white: #fff;
 }
 html,
@@ -23,11 +23,11 @@ body {
     color: var(--color-dark-blue);
     &::before {
         background-size: contain;
-        background-image: url('assets/background.png');
+        background-image: url("assets/background.png");
         background-position: center;
         background-repeat: no-repeat;
-        opacity: .05;
-        content: '';
+        opacity: 0.05;
+        content: "";
         top: 0;
         left: 0;
         bottom: 0;
@@ -43,7 +43,7 @@ body {
     border-radius: 4px;
     color: var(--color-white);
     display: flex;
-    font-size: .8em;
+    font-size: 0.8em;
     font-weight: 700;
     padding: 0px 6px;
 }

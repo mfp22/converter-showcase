@@ -38,60 +38,49 @@ import { combineLatest, filter, interval, mergeMap, Observable, share, startWith
         MatSelectModule,
         ReactiveFormsModule,
     ],
-    providers: [
-        AsyncPipe,
-    ],
+    providers: [AsyncPipe],
 })
 export class ConverterComponent extends SubscriptionSupervisorComponent {
     exchangeRateGapLimit = 0.02;
-    readonly floatRegex = /^(?:[1-9]\d*|0(?!(?:\.0+)?$)){1}(?:\.\d{1,2})?$/
+    readonly floatRegex = /^(?:[1-9]\d*|0(?!(?:\.0+)?$)){1}(?:\.\d{1,2})?$/;
     readonly iso4217: iso4217[] = Object.values(iso4217);
     readonly changeForm = this.formBuilder.group({
         exchangeRateForced: this.formBuilder.nonNullable.control('', {
-            validators: [
-                Validators.pattern(this.floatRegex),
-            ],
+            validators: [Validators.pattern(this.floatRegex)],
         }),
         cashSource: this.formBuilder.nonNullable.group({
-            amount: this.formBuilder.nonNullable.control(
-                '',
-                {validators: [
-                    Validators.pattern(this.floatRegex),
-                    Validators.required,
-                ]}
-            ),
+            amount: this.formBuilder.nonNullable.control('', {
+                validators: [Validators.pattern(this.floatRegex), Validators.required],
+            }),
             currency: iso4217.EUR,
         }),
         cashTarget: this.formBuilder.nonNullable.group({
-            amount: this.formBuilder.nonNullable.control(
-                '',
-                {validators: [
-                    Validators.pattern(this.floatRegex),
-                    Validators.required,
-                ]}
-            ),
+            amount: this.formBuilder.nonNullable.control('', {
+                validators: [Validators.pattern(this.floatRegex), Validators.required],
+            }),
             currency: iso4217.USD,
         }),
     });
 
     readonly exchangeRateReal$: Observable<ExchangeRate> = interval(1000).pipe(
-        mergeMap(() => this.exchangeRateService.get(
-            this.changeForm.controls.cashSource.controls.currency.value,
-            this.changeForm.controls.cashTarget.controls.currency.value,
-        )),
+        mergeMap(() =>
+            this.exchangeRateService.get(
+                this.changeForm.controls.cashSource.controls.currency.value,
+                this.changeForm.controls.cashTarget.controls.currency.value,
+            ),
+        ),
         tap((exchangeRate: ExchangeRate) => {
             /**
              * RealTime exchangeRateGap validation request.
-             * 
+             *
              * Cause we want realtime validation, we use manual validation instead of formControl validation function injection.
              */
             const exchangeRateGap = this.exchangeRateGap(exchangeRate.rate);
             this.changeForm.controls.exchangeRateForced.updateValueAndValidity();
-            if (
-                this.changeForm.controls.exchangeRateForced.value &&
-                Math.abs(exchangeRateGap) > this.exchangeRateGapLimit
-            ) {
-                this.changeForm.controls.exchangeRateForced.setErrors({limitValidator: {required: this.exchangeRateGapLimit, actual: exchangeRateGap}})
+            if (this.changeForm.controls.exchangeRateForced.value && Math.abs(exchangeRateGap) > this.exchangeRateGapLimit) {
+                this.changeForm.controls.exchangeRateForced.setErrors({
+                    limitValidator: { required: this.exchangeRateGapLimit, actual: exchangeRateGap },
+                });
             }
         }),
         tap(exchangeRate => {
@@ -100,12 +89,13 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
                 (!this.changeForm.controls.exchangeRateForced.valid || !this.changeForm.controls.exchangeRateForced.value)
             ) {
                 this.changeForm.controls.cashTarget.controls.amount.setValue(
-                    this.changeForm.controls.cashSource.controls.amount.value ?
-                        `${((Number(this.changeForm.controls.cashSource.controls.amount.value) * exchangeRate.rate).toFixed(2))}` :
-                        '', {
+                    this.changeForm.controls.cashSource.controls.amount.value
+                        ? `${(Number(this.changeForm.controls.cashSource.controls.amount.value) * exchangeRate.rate).toFixed(2)}`
+                        : '',
+                    {
                         emitEvent: false,
-                    }
-                )
+                    },
+                );
             }
         }),
         share(),
@@ -113,29 +103,37 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
     readonly cashSourceChanges$ = this.changeForm.controls.cashSource.valueChanges.pipe(
         withLatestFrom(this.exchangeRateReal$),
         tap(([cashSource, exchangeRateReal]) => {
-            const exchangeRate = this.changeForm.controls.exchangeRateForced.valid && this.changeForm.controls.exchangeRateForced.value ?
-                Number(this.changeForm.controls.exchangeRateForced.value) : exchangeRateReal.rate;
+            const exchangeRate =
+                this.changeForm.controls.exchangeRateForced.valid && this.changeForm.controls.exchangeRateForced.value
+                    ? Number(this.changeForm.controls.exchangeRateForced.value)
+                    : exchangeRateReal.rate;
             this.changeForm.controls.cashTarget.controls.amount.setValue(
-                this.changeForm.controls.cashSource.controls.amount.valid && this.changeForm.controls.cashSource.controls.amount.value ?
-                    `${(Number(cashSource.amount) * exchangeRate).toFixed(2)}` :
-                    '', {
+                this.changeForm.controls.cashSource.controls.amount.valid &&
+                    this.changeForm.controls.cashSource.controls.amount.value
+                    ? `${(Number(cashSource.amount) * exchangeRate).toFixed(2)}`
+                    : '',
+                {
                     emitEvent: false,
-                }
+                },
             );
         }),
     );
     readonly cashTargetChanges$ = this.changeForm.controls.cashTarget.valueChanges.pipe(
         withLatestFrom(this.exchangeRateReal$),
         tap(([cashTarget, exchangeRateReal]) => {
-            const exchangeRate = this.changeForm.controls.exchangeRateForced.valid && this.changeForm.controls.exchangeRateForced.value ?
-                Number(this.changeForm.controls.exchangeRateForced.value) : exchangeRateReal.rate;
+            const exchangeRate =
+                this.changeForm.controls.exchangeRateForced.valid && this.changeForm.controls.exchangeRateForced.value
+                    ? Number(this.changeForm.controls.exchangeRateForced.value)
+                    : exchangeRateReal.rate;
             this.changeForm.controls.cashSource.controls.amount.setValue(
-                this.changeForm.controls.cashTarget.controls.amount.valid && this.changeForm.controls.cashTarget.controls.amount.value ?
-                    `${(Number(cashTarget.amount) / exchangeRate).toFixed(2)}` :
-                    '', {
+                this.changeForm.controls.cashTarget.controls.amount.valid &&
+                    this.changeForm.controls.cashTarget.controls.amount.value
+                    ? `${(Number(cashTarget.amount) / exchangeRate).toFixed(2)}`
+                    : '',
+                {
                     emitEvent: false,
-                }
-            )
+                },
+            );
         }),
     );
     readonly exchangeRateForcedChanges$ = this.changeForm.controls.exchangeRateForced.valueChanges.pipe(
@@ -143,24 +141,29 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         withLatestFrom(this.exchangeRateReal$),
         tap(([exchangeRate, realExchangeRate]) => {
             this.changeForm.controls.cashTarget.controls.amount.setValue(
-                this.changeForm.controls.cashSource.controls.amount.valid && this.changeForm.controls.cashSource.controls.amount.value ?
-                    `${(Number(this.changeForm.controls.cashSource.controls.amount.value) * Number(exchangeRate ? exchangeRate : realExchangeRate)).toFixed(2)}` :
-                    '',
+                this.changeForm.controls.cashSource.controls.amount.valid &&
+                    this.changeForm.controls.cashSource.controls.amount.value
+                    ? `${(
+                          Number(this.changeForm.controls.cashSource.controls.amount.value) *
+                          Number(exchangeRate ? exchangeRate : realExchangeRate)
+                      ).toFixed(2)}`
+                    : '',
                 {
                     emitEvent: false,
-                }
+                },
             );
         }),
     );
     readonly currencies$ = combineLatest([
-        this.changeForm.controls.cashSource.controls.currency.valueChanges.pipe(startWith(this.changeForm.controls.cashSource.controls.currency.value)),
-        this.changeForm.controls.cashTarget.controls.currency.valueChanges.pipe(startWith(this.changeForm.controls.cashTarget.controls.currency.value)),
+        this.changeForm.controls.cashSource.controls.currency.valueChanges.pipe(
+            startWith(this.changeForm.controls.cashSource.controls.currency.value),
+        ),
+        this.changeForm.controls.cashTarget.controls.currency.valueChanges.pipe(
+            startWith(this.changeForm.controls.cashTarget.controls.currency.value),
+        ),
     ]);
 
-    constructor(
-        public exchangeRateService: ExchangeRateService,
-        private formBuilder: FormBuilder,
-    ) {
+    constructor(public exchangeRateService: ExchangeRateService, private formBuilder: FormBuilder) {
         super();
         this.cashSourceChanges$.pipe(this.unsubsribeOnDestroy).subscribe();
         this.cashTargetChanges$.pipe(this.unsubsribeOnDestroy).subscribe();
@@ -206,10 +209,10 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
 
     exchangeRateGap(exchangeRateReferance: number): number {
         if (+this.changeForm.controls.exchangeRateForced.value === 0) {
-            return this.exchangeRateGapLimit+1
+            return this.exchangeRateGapLimit + 1;
         }
         const a = +(+this.changeForm.controls.exchangeRateForced.value - exchangeRateReferance).toFixed(2);
-        const b = +(a/exchangeRateReferance).toFixed(10)
+        const b = +(a / exchangeRateReferance).toFixed(10);
         return b;
     }
 }

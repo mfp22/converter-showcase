@@ -1,8 +1,8 @@
 import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 
 @Directive({
-  selector: '[appGrid]',
-  standalone: true,
+    selector: '[appGrid]',
+    standalone: true,
 })
 export class GridDirective implements OnChanges {
     @Input() gap = 'none';
@@ -10,7 +10,7 @@ export class GridDirective implements OnChanges {
     @Input() templateRow = 'none';
 
     constructor(private el: ElementRef) {
-      this.el.nativeElement.style.display = 'grid';
+        this.el.nativeElement.style.display = 'grid';
     }
 
     ngOnChanges(): void {

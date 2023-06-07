@@ -3,16 +3,12 @@
     <h2>Page Not Found</h2>
 </header>
 <content>
-    <button
-        mat-fab
-        color="primary"
-        aria-label="Redirection button to converter pager"
-        (click)="redirect()">
+    <button mat-fab color="primary" aria-label="Redirection button to converter pager" (click)="redirect()">
         <mat-icon>home</mat-icon>
     </button>
-    <strong>AUTOMATIC COUNTDOWN<br>OF PAGE REDIRECTION TO CONVERTER</strong>
+    <strong>AUTOMATIC COUNTDOWN<br />OF PAGE REDIRECTION TO CONVERTER</strong>
     <div class="timer" *ngrxLet="redirectionCountdown$ as redirectionCountdown">
-        <strong>{{redirectionCountdown}}</strong>
+        <strong>{{ redirectionCountdown }}</strong>
         <mat-spinner></mat-spinner>
     </div>
 </content>

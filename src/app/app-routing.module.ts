@@ -5,7 +5,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 const routes: Routes = [
     {
         path: 'converter',
-        loadComponent: () => import('./components/converter/converter.component').then(m => m.ConverterComponent)
+        loadComponent: () => import('./components/converter/converter.component').then(m => m.ConverterComponent),
     },
     {
         path: '',
@@ -22,4 +22,4 @@ const routes: Routes = [
     exports: [RouterModule],
     imports: [RouterModule.forRoot(routes)],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

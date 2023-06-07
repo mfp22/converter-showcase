@@ -1,42 +1,52 @@
-<mat-card>
+<mat-card *ngIf="exchangeRate">
     <mat-card-header>
-        <mat-card-title>{{exchangeRate.sourceCurrency}}<mat-icon>arrow_right_alt</mat-icon>{{exchangeRate.targetCurrency}}</mat-card-title>
-        <mat-card-subtitle>{{exchangeRate.date|date}}</mat-card-subtitle>
-        <button
-            mat-icon-button
-            color="warn"
-            (click)="deleteRequest.emit(exchangeRate)">
+        <mat-card-title
+            >{{ exchangeRate.sourceCurrency }}<mat-icon>arrow_right_alt</mat-icon
+            >{{ exchangeRate.targetCurrency }}</mat-card-title
+        >
+        <mat-card-subtitle>{{ exchangeRate.date | date }}</mat-card-subtitle>
+        <button mat-icon-button color="warn" (click)="deleteRequest.emit(exchangeRate)">
             <mat-icon>delete</mat-icon>
         </button>
     </mat-card-header>
     <mat-card-content>
-        <span>real rate <strong>{{1}}:{{exchangeRate.exchangeRateReal}}</strong></span>
+        <span
+            >real rate <strong>{{ 1 }}:{{ exchangeRate.exchangeRateReal }}</strong></span
+        >
         <span>
             value
             <strong>
-                {{exchangeRate.sourceValue|currency:exchangeRate.sourceCurrency}}
+                {{ exchangeRate.sourceValue | currency : exchangeRate.sourceCurrency }}
                 <mat-icon>arrow_right_alt</mat-icon>
-                {{exchangeRate.targetValue|currency:exchangeRate.targetCurrency}}
+                {{ exchangeRate.targetValue | currency : exchangeRate.targetCurrency }}
             </strong>
         </span>
     </mat-card-content>
     <mat-card-content>
-        <span>forced rate <strong>
-            <span
-                class="snack"
-                *ngIf="exchangeRate.variation !== null"
-                [style.background-color]="exchangeRate.variation > 0.02 || exchangeRate.variation < -0.02 ? 'var(--color-warn)' : 'var(--color-primary)'">
-                {{exchangeRate.variation|percent:'1.0-2'}}
-            </span>
-            {{1}}:{{exchangeRate.exchangeRateForced|noData}}
-        </strong></span>
+        <span
+            >forced rate
+            <strong>
+                <span
+                    class="snack"
+                    *ngIf="exchangeRate.variation !== null"
+                    [style.background-color]="
+                        exchangeRate.variation > 0.02 || exchangeRate.variation < -0.02
+                            ? 'var(--color-warn)'
+                            : 'var(--color-primary)'
+                    "
+                >
+                    {{ exchangeRate.variation | percent : "1.0-2" }}
+                </span>
+                {{ 1 }}:{{ exchangeRate.exchangeRateForced | noData }}
+            </strong></span
+        >
         <span>
             value
             <strong>
-                {{exchangeRate.sourceValue|currency:exchangeRate.sourceCurrency}}
+                {{ exchangeRate.sourceValue | currency : exchangeRate.sourceCurrency }}
                 <mat-icon>arrow_right_alt</mat-icon>
-                {{exchangeRate.targetValue|currency:exchangeRate.targetCurrency}}
+                {{ exchangeRate.targetValue | currency : exchangeRate.targetCurrency }}
             </strong>
         </span>
     </mat-card-content>
-  </mat-card>
+</mat-card>

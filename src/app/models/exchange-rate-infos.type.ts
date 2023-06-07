@@ -1,4 +1,4 @@
-import { iso4217 } from ".";
+import { iso4217 } from '.';
 
 export type ExchangeRateInfo = {
     date: string;
@@ -8,5 +8,5 @@ export type ExchangeRateInfo = {
     sourceValue: string;
     targetCurrency: iso4217;
     targetValue: string;
-    variation: number|null;
+    variation: number | null;
 };
