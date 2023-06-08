@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/models';
-import { ExchangeRateCardComponent } from 'src/app/components/exchange-rate-card/exchange-rate-card.component';
-import { ExchangeRateChartComponent } from 'src/app/components/exchange-rate-chart/exchange-rate-chart.component';
+import { ExchangeRateCardComponent } from 'src/app/exchange-rate-card/exchange-rate-card.component';
+import { ExchangeRateChartComponent } from 'src/app/exchange-rate-chart/exchange-rate-chart.component';
 import { ExchangeRateService } from 'src/app/services';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GridDirective } from 'src/app/directives';
@@ -13,7 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ReversePipe, NoDataPipe } from 'src/app/pipes';
-import { SubscriptionSupervisorComponent } from 'src/app/components/subscription-supervisor/subscription-supervisor.component';
+import { SubscriptionSupervisorComponent } from 'src/app/subscription-supervisor/subscription-supervisor.component';
 import { combineLatest, filter, interval, mergeMap, Observable, share, startWith, tap, withLatestFrom } from 'rxjs';
 
 @Component({
