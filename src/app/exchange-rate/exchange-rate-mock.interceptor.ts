@@ -2,8 +2,8 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } fr
 import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { iso4217 } from 'src/app/exchange-rate/iso4217.enum';
-import { ExchangeRate } from '../exchange-rate/exchange-rate.type';
+import { iso4217 } from './iso4217.enum';
+import { ExchangeRate } from './exchange-rate.type';
 
 @Injectable()
 export class ExchangeRateMockInterceptor implements HttpInterceptor {

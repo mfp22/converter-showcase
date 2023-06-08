@@ -1,10 +1,10 @@
-import { ExchangeRateMockInterceptor } from 'src/app/interceptors';
 import { ExchangeRateService } from './exchange-rate.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { map } from 'rxjs';
 import { TestBed } from '@angular/core/testing';
 import { iso4217 } from 'src/app/exchange-rate/iso4217.enum';
+import { ExchangeRateMockInterceptor } from '../exchange-rate/exchange-rate-mock.interceptor';
 
 describe('ExchangeRateService', () => {
     let exchangeRateService: ExchangeRateService;

@@ -5,7 +5,7 @@ import { ExchangeRateCardComponent } from 'src/app/exchange-rate-card/exchange-r
 import { ExchangeRateChartComponent } from 'src/app/exchange-rate/exchange-rate-chart.component';
 import { ExchangeRateService } from 'src/app/services';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GridDirective } from 'src/app/directives';
+import { GridDirective } from '../grid.directive';
 import { LetDirective } from '@ngrx/component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
