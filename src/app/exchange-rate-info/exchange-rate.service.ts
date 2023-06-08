@@ -1,4 +1,4 @@
-import { ExchangeRateInfo } from 'src/app/models';
+import { ExchangeRateInfo } from './exchange-rate-infos.type';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
