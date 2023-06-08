@@ -4,7 +4,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ExchangeRateMockInterceptor } from 'src/app/interceptors';
 import { ExchangeRateService } from 'src/app/services';
-import { iso4217 } from 'src/app/models';
+import { iso4217 } from 'src/app/exchange-rate/iso4217.enum';
 
 describe('ConverterComponent', () => {
     let component: ConverterComponent;

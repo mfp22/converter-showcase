@@ -1,7 +1,9 @@
-import { ExchangeRate, ExchangeRateInfo, iso4217 } from 'src/app/models';
+import { ExchangeRateInfo } from 'src/app/models';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { iso4217 } from 'src/app/exchange-rate/iso4217.enum';
+import { ExchangeRate } from 'src/app/exchange-rate/exchange-rate.type';
 
 @Injectable({ providedIn: 'root' })
 export class ExchangeRateService {

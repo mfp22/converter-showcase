@@ -1,4 +1,4 @@
-import { iso4217 } from '.';
+import { iso4217 } from 'src/app/exchange-rate/iso4217.enum';
 
 export type ExchangeRateInfo = {
     date: string;

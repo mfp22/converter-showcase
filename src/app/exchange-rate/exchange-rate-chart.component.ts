@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ExchangeRate } from 'src/app/models';
+import { ExchangeRate } from './exchange-rate.type';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { Observable, bufferCount, scan, tap } from 'rxjs';
 import { SubscriptionSupervisorComponent } from 'src/app/subscription-supervisor/subscription-supervisor.component';
