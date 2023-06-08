@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule, AsyncPipe } from '@angular/common';
-import { ExchangeRateInfo } from 'src/app/models';
-import { ExchangeRateCardComponent } from 'src/app/exchange-rate-card/exchange-rate-card.component';
+import { ExchangeRateInfo } from '../exchange-rate-infos.type';
+import { ExchangeRateCardComponent } from 'src/app/exchange-rate-info/exchange-rate-card/exchange-rate-card.component';
 import { ExchangeRateChartComponent } from 'src/app/exchange-rate/exchange-rate-chart.component';
 import { ExchangeRateService } from 'src/app/services';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GridDirective } from '../grid.directive';
+import { GridDirective } from '../../grid.directive';
 import { LetDirective } from '@ngrx/component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReversePipe, NoDataPipe } from 'src/app/pipes';
 import { SubscriptionSupervisorComponent } from 'src/app/subscription-supervisor/subscription-supervisor.component';
 import { combineLatest, filter, interval, mergeMap, Observable, share, startWith, tap, withLatestFrom } from 'rxjs';
-import { ExchangeRate } from '../exchange-rate/exchange-rate.type';
+import { ExchangeRate } from '../../exchange-rate/exchange-rate.type';
 import { iso4217 } from 'src/app/exchange-rate/iso4217.enum';
 
 @Component({

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { ExchangeRateInfo } from 'src/app/models';
+import { ExchangeRateInfo } from '../exchange-rate-infos.type';
 import { NoDataPipe } from 'src/app/pipes';
 
 @Component({
