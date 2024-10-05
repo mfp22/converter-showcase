@@ -92,7 +92,7 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
             ) {
                 this.changeForm.controls.cashTarget.controls.amount.setValue(
                     this.changeForm.controls.cashSource.controls.amount.value
-                        ? `${(Number(this.changeForm.controls.cashSource.controls.amount.value) * exchangeRate.rate).toFixed(2)}`
+                        ? (Number(this.changeForm.controls.cashSource.controls.amount.value) * exchangeRate.rate).toFixed(2)
                         : '',
                     {
                         emitEvent: false,
@@ -107,12 +107,12 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         tap(([cashSource, exchangeRateReal]) => {
             const exchangeRate =
                 this.changeForm.controls.exchangeRateForced.valid && this.changeForm.controls.exchangeRateForced.value
-                    ? Number(this.changeForm.controls.exchangeRateForced.value)
+                    ? +this.changeForm.controls.exchangeRateForced.value
                     : exchangeRateReal.rate;
             this.changeForm.controls.cashTarget.controls.amount.setValue(
                 this.changeForm.controls.cashSource.controls.amount.valid &&
                     this.changeForm.controls.cashSource.controls.amount.value
-                    ? `${(Number(cashSource.amount) * exchangeRate).toFixed(2)}`
+                    ? (Number(cashSource.amount) * exchangeRate).toFixed(2)
                     : '',
                 {
                     emitEvent: false,
@@ -125,12 +125,12 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         tap(([cashTarget, exchangeRateReal]) => {
             const exchangeRate =
                 this.changeForm.controls.exchangeRateForced.valid && this.changeForm.controls.exchangeRateForced.value
-                    ? Number(this.changeForm.controls.exchangeRateForced.value)
+                    ? +this.changeForm.controls.exchangeRateForced.value
                     : exchangeRateReal.rate;
             this.changeForm.controls.cashSource.controls.amount.setValue(
                 this.changeForm.controls.cashTarget.controls.amount.valid &&
                     this.changeForm.controls.cashTarget.controls.amount.value
-                    ? `${(Number(cashTarget.amount) / exchangeRate).toFixed(2)}`
+                    ? (Number(cashTarget.amount) / exchangeRate).toFixed(2)
                     : '',
                 {
                     emitEvent: false,
@@ -145,10 +145,10 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
             this.changeForm.controls.cashTarget.controls.amount.setValue(
                 this.changeForm.controls.cashSource.controls.amount.valid &&
                     this.changeForm.controls.cashSource.controls.amount.value
-                    ? `${(
-                          Number(this.changeForm.controls.cashSource.controls.amount.value) *
-                          Number(exchangeRate ? exchangeRate : realExchangeRate)
-                      ).toFixed(2)}`
+                    ? (
+                          +this.changeForm.controls.cashSource.controls.amount.value *
+                          +(exchangeRate ? exchangeRate : realExchangeRate)
+                      ).toFixed(2)
                     : '',
                 {
                     emitEvent: false,
@@ -174,12 +174,8 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
     }
 
     save(exchangeRateReal: ExchangeRate): void {
-        if (
-            this.changeForm.controls.cashSource.controls.amount.value &&
-            this.changeForm.controls.cashTarget.controls.amount.value &&
-            this.changeForm.controls.cashSource.controls.amount.valid &&
-            this.changeForm.controls.cashTarget.controls.amount.valid
-        ) {
+        const { cashSource, cashTarget } = this.changeForm.controls;
+        if (cashSource.controls.amount.valid && cashTarget.controls.amount.valid) {
             this.exchangeRateService.add({
                 date: exchangeRateReal.date,
                 exchangeRateForced: this.changeForm.controls.exchangeRateForced.value,
