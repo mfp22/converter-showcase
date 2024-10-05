@@ -19,6 +19,8 @@ export class ExchangeRateChartComponent extends SubscriptionSupervisorComponent 
     updateOptions: Partial<echarts.EChartsOption> = {};
 
     readonly chartOption: echarts.EChartsOption = {
+        // backgroundColor: '#424242',
+        color: '#7b1fa2',
         title: this.processTitle(),
         tooltip: {
             trigger: 'axis',
