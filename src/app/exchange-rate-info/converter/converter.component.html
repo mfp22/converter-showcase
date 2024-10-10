@@ -2,7 +2,7 @@
     <form appGrid templateColumns="repeat(2, 1fr)" gap="20px" [formGroup]="changeForm" (ngSubmit)="save(exchangeRateReal)">
         <div>
             <mat-form-field formGroupName="cashSource">
-                <input placeholder="1" formControlName="amount" matInput />|
+                <input placeholder="1" formControlName="amount" matInput data-test="cashSource-amount" />|
                 <mat-select formControlName="currency">
                     <mat-option
                         *ngFor="let quote of iso4217"
@@ -14,7 +14,12 @@
                 </mat-select>
             </mat-form-field>
             <mat-form-field formGroupName="cashTarget">
-                <input placeholder="{{ exchangeRateReal.rate }}" formControlName="amount" matInput />|
+                <input
+                    placeholder="{{ exchangeRateReal.rate }}"
+                    formControlName="amount"
+                    matInput
+                    data-test="cashTarget-amount"
+                />|
                 <mat-select formControlName="currency">
                     <mat-option
                         *ngFor="let quote of iso4217"
@@ -29,7 +34,12 @@
         <div>
             <mat-form-field>
                 <span matTextPrefix>1:</span>
-                <input placeholder="{{ exchangeRateReal.rate }}" formControlName="exchangeRateForced" matInput />
+                <input
+                    placeholder="{{ exchangeRateReal.rate }}"
+                    formControlName="exchangeRateForced"
+                    matInput
+                    data-test="exchangeRateForced"
+                />
                 <mat-icon matSuffix *ngIf="changeForm.controls.exchangeRateForced.value.length === 0"
                     >radio_button_unchecked</mat-icon
                 >
@@ -46,23 +56,19 @@
                     >cancel</mat-icon
                 >
                 <mat-error *ngIf="changeForm.controls.exchangeRateForced.hasError('limitValidator')">
-                    abs({{ changeForm.controls.exchangeRateForced.getError("limitValidator").actual | percent : "1.0-2" }}) ER
+                    abs({{ changeForm.controls.exchangeRateForced.getError('limitValidator').actual | percent : '1.0-2' }}) ER
                     variation >
-                    {{ changeForm.controls.exchangeRateForced.getError("limitValidator").required | percent : "1.0-2" }}
+                    {{ changeForm.controls.exchangeRateForced.getError('limitValidator').required | percent : '1.0-2' }}
                     ER limit!
                 </mat-error>
             </mat-form-field>
             <div style="display: flex; justify-content: space-between; align-items: center">
                 <div>
-                    <button mat-icon-button type="button" (click)="switch()" color="primary">
+                    <button mat-icon-button type="button" (click)="switch()" color="primary" data-test="switch">
                         <mat-icon>sync_alt</mat-icon>
                     </button>
-                    <button
-                        mat-icon-button
-                        (click)="save(exchangeRateReal)"
-                        color="primary"
-                        [disabled]="!changeForm.controls.cashSource.controls.amount.valid"
-                    >
+                    <button mat-icon-button (click)="save(exchangeRateReal)" color="primary" data-test="save">
+                        [disabled]="!changeForm.controls.cashSource.controls.amount.valid" >
                         <mat-icon>save</mat-icon>
                     </button>
                 </div>
