@@ -67,8 +67,13 @@
                     <button mat-icon-button type="button" (click)="switch()" color="primary" data-test="switch">
                         <mat-icon>sync_alt</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="save(exchangeRateReal)" color="primary" data-test="save">
-                        [disabled]="!changeForm.controls.cashSource.controls.amount.valid" >
+                    <button
+                        mat-icon-button
+                        (click)="save(exchangeRateReal)"
+                        color="primary"
+                        [disabled]="!changeForm.controls.cashSource.controls.amount.valid"
+                        data-test="save"
+                    >
                         <mat-icon>save</mat-icon>
                     </button>
                 </div>
