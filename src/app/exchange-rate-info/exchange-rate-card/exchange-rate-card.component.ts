@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,7 +14,22 @@ import { NoDataPipe } from 'src/app/pipes';
     standalone: true,
     imports: [CommonModule, MatButtonModule, MatCardModule, MatIconModule, NoDataPipe],
 })
-export class ExchangeRateCardComponent {
+export class ExchangeRateCardComponent implements OnChanges {
     @Input() exchangeRate: ExchangeRateInfo | undefined;
     @Output() deleteRequest = new EventEmitter<ExchangeRateInfo>();
+
+    targetValueReal = '';
+    targetValueForced = '';
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['exchangeRate'] && this.exchangeRate) {
+            const exchangeRate = this.exchangeRate;
+            const exchangeRateReal = +exchangeRate.exchangeRateReal;
+            const exchangeRateForced = +exchangeRate.exchangeRateForced;
+            const sourceValue = +exchangeRate.sourceValue;
+
+            this.targetValueReal = (sourceValue * exchangeRateReal).toFixed(2);
+            this.targetValueForced = (sourceValue * exchangeRateForced).toFixed(2);
+        }
+    }
 }

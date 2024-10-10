@@ -1,15 +1,15 @@
-<mat-card *ngIf="exchangeRate">
+<mat-card *ngIf="exchangeRate" data-test="exchangeRateCard">
     <mat-card-header>
         <mat-card-title
             >{{ exchangeRate.sourceCurrency }}<mat-icon>arrow_right_alt</mat-icon
             >{{ exchangeRate.targetCurrency }}</mat-card-title
         >
         <mat-card-subtitle>{{ exchangeRate.date | date }}</mat-card-subtitle>
-        <button mat-icon-button color="warn" (click)="deleteRequest.emit(exchangeRate)">
+        <button mat-icon-button color="warn" (click)="deleteRequest.emit(exchangeRate)" data-test="delete">
             <mat-icon>delete</mat-icon>
         </button>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content data-test="realRate">
         <span
             >real rate <strong>{{ 1 }}:{{ exchangeRate.exchangeRateReal }}</strong></span
         >
@@ -18,11 +18,11 @@
             <strong>
                 {{ exchangeRate.sourceValue | currency : exchangeRate.sourceCurrency }}
                 <mat-icon>arrow_right_alt</mat-icon>
-                {{ exchangeRate.targetValue | currency : exchangeRate.targetCurrency }}
+                {{ targetValueReal | currency : exchangeRate.targetCurrency }}
             </strong>
         </span>
     </mat-card-content>
-    <mat-card-content>
+    <mat-card-content data-test="forcedRate">
         <span
             >forced rate
             <strong>
@@ -35,7 +35,7 @@
                             : 'var(--color-primary)'
                     "
                 >
-                    {{ exchangeRate.variation | percent : "1.0-2" }}
+                    {{ exchangeRate.variation | percent : '1.0-2' }}
                 </span>
                 {{ 1 }}:{{ exchangeRate.exchangeRateForced | noData }}
             </strong></span
@@ -45,7 +45,7 @@
             <strong>
                 {{ exchangeRate.sourceValue | currency : exchangeRate.sourceCurrency }}
                 <mat-icon>arrow_right_alt</mat-icon>
-                {{ exchangeRate.targetValue | currency : exchangeRate.targetCurrency }}
+                {{ targetValueForced | currency : exchangeRate.targetCurrency }}
             </strong>
         </span>
     </mat-card-content>
