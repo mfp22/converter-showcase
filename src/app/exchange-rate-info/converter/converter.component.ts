@@ -1,21 +1,33 @@
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule, AsyncPipe } from '@angular/common';
-import { ExchangeRateInfo } from '../exchange-rate-infos.type';
-import { ExchangeRateCardComponent } from 'src/app/exchange-rate-info/exchange-rate-card/exchange-rate-card.component';
-import { ExchangeRateChartComponent } from 'src/app/exchange-rate/exchange-rate-chart.component';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GridDirective } from 'src/app/grid/grid.directive';
-import { LetDirective } from '@ngrx/component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ReversePipe, NoDataPipe } from 'src/app/pipes';
-import { SubscriptionSupervisorComponent } from 'src/app/subscription-supervisor/subscription-supervisor.component';
-import { combineLatest, filter, interval, mergeMap, Observable, share, startWith, tap, withLatestFrom } from 'rxjs';
-import { ExchangeRate } from '../../exchange-rate/exchange-rate.type';
+import { LetDirective } from '@ngrx/component';
+import {
+    combineLatest,
+    debounceTime,
+    filter,
+    mergeMap,
+    Observable,
+    share,
+    startWith,
+    switchMap,
+    tap,
+    timer,
+    withLatestFrom,
+} from 'rxjs';
+import { ExchangeRateCardComponent } from 'src/app/exchange-rate-info/exchange-rate-card/exchange-rate-card.component';
+import { ExchangeRateChartComponent } from 'src/app/exchange-rate/exchange-rate-chart.component';
 import { iso4217 } from 'src/app/exchange-rate/iso4217.enum';
+import { GridDirective } from 'src/app/grid/grid.directive';
+import { NoDataPipe, ReversePipe } from 'src/app/pipes';
+import { SubscriptionSupervisorComponent } from 'src/app/subscription-supervisor/subscription-supervisor.component';
+import { ExchangeRate } from '../../exchange-rate/exchange-rate.type';
+import { ExchangeRateInfo } from '../exchange-rate-infos.type';
 import { ExchangeRateService } from '../exchange-rate.service';
 
 @Component({
@@ -64,42 +76,58 @@ export class ConverterComponent extends SubscriptionSupervisorComponent {
         }),
     });
 
-    readonly exchangeRateReal$: Observable<ExchangeRate> = interval(1000).pipe(
-        mergeMap(() =>
-            this.exchangeRateService.get(
-                this.changeForm.controls.cashSource.controls.currency.value,
-                this.changeForm.controls.cashTarget.controls.currency.value,
+    sourceCurrency = this.changeForm.controls.cashSource.controls.currency;
+    targetCurrency = this.changeForm.controls.cashTarget.controls.currency;
+    sourceCurrency$ = this.sourceCurrency.valueChanges.pipe(startWith(this.sourceCurrency.value));
+    targetCurrency$ = this.targetCurrency.valueChanges.pipe(startWith(this.targetCurrency.value));
+
+    readonly exchangeRateReal$: Observable<ExchangeRate> = combineLatest([this.sourceCurrency$, this.targetCurrency$]).pipe(
+        debounceTime(0), // When switching, both change
+        switchMap(([sourceCurrency, targetCurrency]) =>
+            // changed from interval(1000) so initial value would come through immediately
+            // page is blank until this emits. This makes tests faster
+            // Tests found bug where saved currencies didn't agree with displayed currencies because the saved value comes from
+            // here, which wasn't updating until this emitted.
+            // In a real application, we should emit immediately but without the value, and disable
+            // saving until the real exchange rate value became defined again.
+            timer(0, 1000).pipe(
+                mergeMap(() => this.exchangeRateService.get(sourceCurrency, targetCurrency)),
+                tap((exchangeRate: ExchangeRate) => {
+                    /**
+                     * RealTime exchangeRateGap validation request.
+                     *
+                     * Cause we want realtime validation, we use manual validation instead of formControl validation function injection.
+                     */
+                    const exchangeRateGap = this.exchangeRateGap(exchangeRate.rate);
+                    this.changeForm.controls.exchangeRateForced.updateValueAndValidity();
+                    if (
+                        this.changeForm.controls.exchangeRateForced.value &&
+                        Math.abs(exchangeRateGap) > this.exchangeRateGapLimit
+                    ) {
+                        this.changeForm.controls.exchangeRateForced.setErrors({
+                            limitValidator: { required: this.exchangeRateGapLimit, actual: exchangeRateGap },
+                        });
+                    }
+                }),
+                tap(exchangeRate => {
+                    if (
+                        this.changeForm.controls.cashSource.controls.amount.valid &&
+                        (!this.changeForm.controls.exchangeRateForced.valid || !this.changeForm.controls.exchangeRateForced.value)
+                    ) {
+                        this.changeForm.controls.cashTarget.controls.amount.setValue(
+                            this.changeForm.controls.cashSource.controls.amount.value
+                                ? (Number(this.changeForm.controls.cashSource.controls.amount.value) * exchangeRate.rate).toFixed(
+                                      2,
+                                  )
+                                : '',
+                            {
+                                emitEvent: false,
+                            },
+                        );
+                    }
+                }),
             ),
         ),
-        tap((exchangeRate: ExchangeRate) => {
-            /**
-             * RealTime exchangeRateGap validation request.
-             *
-             * Cause we want realtime validation, we use manual validation instead of formControl validation function injection.
-             */
-            const exchangeRateGap = this.exchangeRateGap(exchangeRate.rate);
-            this.changeForm.controls.exchangeRateForced.updateValueAndValidity();
-            if (this.changeForm.controls.exchangeRateForced.value && Math.abs(exchangeRateGap) > this.exchangeRateGapLimit) {
-                this.changeForm.controls.exchangeRateForced.setErrors({
-                    limitValidator: { required: this.exchangeRateGapLimit, actual: exchangeRateGap },
-                });
-            }
-        }),
-        tap(exchangeRate => {
-            if (
-                this.changeForm.controls.cashSource.controls.amount.valid &&
-                (!this.changeForm.controls.exchangeRateForced.valid || !this.changeForm.controls.exchangeRateForced.value)
-            ) {
-                this.changeForm.controls.cashTarget.controls.amount.setValue(
-                    this.changeForm.controls.cashSource.controls.amount.value
-                        ? (Number(this.changeForm.controls.cashSource.controls.amount.value) * exchangeRate.rate).toFixed(2)
-                        : '',
-                    {
-                        emitEvent: false,
-                    },
-                );
-            }
-        }),
         share(),
     );
     readonly cashSourceChanges$ = this.changeForm.controls.cashSource.valueChanges.pipe(
